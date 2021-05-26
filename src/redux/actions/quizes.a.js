@@ -6,8 +6,14 @@ export const ADD_QUIZ = 'ADD_QUIZ';
 export const REMOVE_QUIZ = 'REMOVE_QUIZ';
 export const ADD_QUESTION = 'ADD_QUSTION';
 export const REMOVE_QUESTION = 'REMOVE_QUESTION';
+export const RECIEVE_QUIZES = 'RECIEVE_QUIZES';
 
 //--------------------------------------------
+
+export const recieveQuizes = (quizes) => ({
+  type: RECIEVE_QUIZES,
+  quizes,
+});
 
 export const addQuiz = (quiz) => ({
   type: ADD_QUIZ,
@@ -32,6 +38,13 @@ export const removeQuestion = (title, id) => ({
 });
 
 //--------------------------------------------
+
+export const handleRecieveQuizes = () => {
+  return async (dispatch) => {
+    const quizes = await API.getQuizes();
+    dispatch(recieveQuizes(quizes));
+  };
+};
 
 export const handleAddQuiz = (title) => {
   return async (dispatch) => {

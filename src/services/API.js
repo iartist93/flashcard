@@ -80,7 +80,7 @@ const removeQuestion = async (title, qid) => {
  * Get and parse all the quizes from the database.
  * @returns All quizes object parsed
  */
-const getQuizes = async () => {
+export const getQuizes = async () => {
   try {
     const allQuizes = await AsyncStorage.getItem(QUIZES_STORAGE_KEY);
     return allQuizes != null ? JSON.parse(allQuizes) : null;
