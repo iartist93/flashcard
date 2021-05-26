@@ -1,22 +1,52 @@
 import 'react-native-gesture-handler';
 
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { Provider } from 'react-redux';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { primary } from './src/utils/colors';
 
 import Quizes from './src/screens/Quizes';
 import AddQuiz from './src/screens/AddQuiz';
 
+import { StyleSheet, Text, View } from 'react-native';
+import { primary } from './src/utils/colors';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import QuizDetails from './src/screens/QuizDetails';
+
 export default function App() {
   const Tab = createBottomTabNavigator();
+  const Stack = createStackNavigator();
 
-  const QuizesScreen = (props) => <Quizes {...props} />;
+  const QuizesScreen = () => {
+    const Home = (props) => <Quizes {...props} />;
+    const Details = (props) => <QuizDetails {...props} />;
+    return (
+      <Stack.Navigator
+        screenOptions={({ route }) => ({
+          headerTintColor: 'white',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: primary,
+          },
+        })}
+      >
+        <Stack.Screen
+          name='QuizesHome'
+          component={Home}
+          options={{ title: 'Quizes' }}
+        />
+        <Stack.Screen
+          name='QuizDetails'
+          component={Details}
+          //TOOD:: Make dynamic header name for each quize
+          options={{ title: 'Details To be Changed' }}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   const AddQuizScreen = (props) => <AddQuiz {...props} />;
 
   return (
