@@ -1,8 +1,8 @@
 import React from 'react';
-
-import { View, Text, TouchableOpacity } from 'react-native';
 import styled from '@emotion/native';
 import { primary } from '../utils/colors';
+import { connect } from 'react-redux';
+import { removeQuiz } from '../redux/actions/quizes.a';
 
 const Container = styled.View`
   height: 400px;
@@ -60,31 +60,44 @@ const TextButtonText = styled.Text`
   color: gray;
 `;
 
-const QuizDetails = ({ route, navigation }) => {
-  const { title } = route.params;
+//-----------------------------------------------------------
 
-  const handleAddQuestion = (title) => {
-    console.log('Add Question Pressed');
+const QuizDetails = ({ navigation, quiz, dispatch }) => {
+  // console.log('Details Quiz Called Again ', quiz);
+  const { title, questions } = quiz;
+
+  const handleAddQuestion = () => {
     navigation.navigate('AddQuestion', { title });
+  };
+
+  const handleRemoveQuiz = () => {
+    dispatch(removeQuiz(title));
+    navigation.navigate('QuizesHome');
   };
 
   return (
     <Container>
       <Title>{title}</Title>
-      <Details>{'3 Questions'}</Details>
+      <Details>{`${questions.length} Questions`}</Details>
       <Button onPress={() => console.log('Pressed')}>
         <ButtonText>Start Quiz</ButtonText>
       </Button>
-      <Button onPress={() => handleAddQuestion(title)}>
+      <Button onPress={handleAddQuestion}>
         <ButtonText>Add Question</ButtonText>
       </Button>
-      <TextButton>
+      <TextButton onPress={handleRemoveQuiz}>
         <TextButtonText>Delete</TextButtonText>
       </TextButton>
     </Container>
   );
 };
 
-//TODO : Get the current quiz item from the state
+const mapState = (state, { route }) => ({
+  quiz: state.quizes[route.params.title],
+});
 
-export default QuizDetails;
+const shouldRender = (prevProps, nextProps) => {
+  return nextProps.quiz ? false : true;
+};
+
+export default connect(mapState)(React.memo(QuizDetails, shouldRender));

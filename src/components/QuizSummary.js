@@ -3,12 +3,15 @@ import { View, Text, TextInput, TouchableHighlight } from 'react-native';
 
 import styled from '@emotion/native';
 
-const Card = styled.TouchableOpacity`
+const CardButton = styled.TouchableOpacity`
   height: 100px;
   background-color: white;
   border-radius: 10px;
   margin: 5px 30px;
   padding: 20px;
+`;
+
+const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -30,12 +33,12 @@ const QuizSummary = ({ item, onCardPress }) => {
   const [title, quiz] = item;
 
   return (
-    <Card onPress={onCardPress} activeOpacity={0.5}>
-      <View>
+    <CardButton onPress={onCardPress} activeOpacity={0.5}>
+      <Row>
         <Title>{title}</Title>
         <Details>{quiz.questions.length}</Details>
-      </View>
-    </Card>
+      </Row>
+    </CardButton>
   );
 };
 
