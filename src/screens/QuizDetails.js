@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/native';
 import { primary } from '../utils/colors';
 import { connect } from 'react-redux';
-import { removeQuiz } from '../redux/actions/quizes.a';
+import { handleRemoveQuiz } from '../redux/actions/quizes.a';
 
 const Container = styled.View`
   height: 400px;
@@ -66,12 +66,12 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
   // console.log('Details Quiz Called Again ', quiz);
   const { title, questions } = quiz;
 
-  const handleAddQuestion = () => {
+  const handleAddQuestionPress = () => {
     navigation.navigate('AddQuestion', { title });
   };
 
-  const handleRemoveQuiz = () => {
-    dispatch(removeQuiz(title));
+  const handleRemoveQuizPress = () => {
+    dispatch(handleRemoveQuiz(title));
     navigation.navigate('QuizesHome');
   };
 
@@ -82,10 +82,10 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
       <Button onPress={() => console.log('Pressed')}>
         <ButtonText>Start Quiz</ButtonText>
       </Button>
-      <Button onPress={handleAddQuestion}>
+      <Button onPress={handleAddQuestionPress}>
         <ButtonText>Add Question</ButtonText>
       </Button>
-      <TextButton onPress={handleRemoveQuiz}>
+      <TextButton onPress={handleRemoveQuizPress}>
         <TextButtonText>Delete</TextButtonText>
       </TextButton>
     </Container>

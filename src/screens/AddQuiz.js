@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import styled from '@emotion/native';
 import { primary } from '../utils/colors';
+import { connect } from 'react-redux';
+import { handleAddQuiz } from '../redux/actions/quizes.a';
 
 const Container = styled.View`
   align-items: center;
@@ -49,18 +51,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddQuiz = () => {
+//----------------------------------------------------------------
+
+const AddQuiz = ({ dispatch, navigation }) => {
+  const [title, setTitle] = useState('test');
+
+  const handleAddQuizPress = () => {
+    dispatch(handleAddQuiz(title));
+    navigation.navigate('Quizes');
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', marginTop: 20 }}>
       <Title>New Quiz</Title>
+      <Title>{title}</Title>
       <Container>
-        <Input placeholder='Quiz Title' style={styles.shadow} />
+        <Input
+          placeholder='Quiz Title'
+          style={styles.shadow}
+          value={title}
+          onChangeText={setTitle}
+        />
         <Button>
-          <ButtonText>Submit</ButtonText>
+          <ButtonText onPress={handleAddQuizPress}>Add</ButtonText>
         </Button>
       </Container>
     </View>
   );
 };
 
-export default AddQuiz;
+const mapState = (state) => ({});
+
+export default connect()(AddQuiz);

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import styled from '@emotion/native';
 import { primary } from '../utils/colors';
+import { connect } from 'react-redux';
+import { handleAddQuestion } from '../redux/actions/quizes.a';
 
 const Container = styled.View`
   align-items: center;
@@ -49,19 +51,47 @@ const styles = StyleSheet.create({
   },
 });
 
-const AddQuestion = () => {
+//---------------------------------------------------
+
+const AddQuestion = ({ route, dispatch, navigation }) => {
+  const { title } = route.params;
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+
+  const handleAddQuestionPress = () => {
+    dispatch(
+      handleAddQuestion(title, {
+        question,
+        answer,
+      })
+    );
+    navigation.goBack();
+  };
+
   return (
     <View style={{ flex: 1, alignItems: 'center', marginTop: 20 }}>
       {/* <Title>New Question</Title> */}
       <Container>
-        <Input placeholder='Question' style={styles.shadow} />
-        <Input placeholder='Answer' style={styles.shadow} />
+        <Input
+          placeholder='Question'
+          style={styles.shadow}
+          value={question}
+          onChangeText={setQuestion}
+        />
+        <Input
+          placeholder='Answer'
+          style={styles.shadow}
+          value={answer}
+          onChangeText={setAnswer}
+        />
         <Button>
-          <ButtonText>Submit</ButtonText>
+          <ButtonText onPress={handleAddQuestionPress}>Submit</ButtonText>
         </Button>
       </Container>
     </View>
   );
 };
 
-export default AddQuestion;
+const mapState = (state) => ({});
+
+export default connect()(AddQuestion);

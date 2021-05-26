@@ -12,14 +12,16 @@ const quizes = (state = {}, action) => {
       return { ...state, ...action.quizes };
     case ADD_QUIZ:
       return { ...state, ...action.quiz };
-    case ADD_QUESTION:
+    case ADD_QUESTION: {
       return {
         ...state,
         [action.title]: {
           ...state[action.title],
-          questions: [...state[action.title].questions, ...action.question],
+          questions: [...state[action.title].questions, action.question],
         },
       };
+    }
+
     case REMOVE_QUIZ: {
       const newState = { ...state };
       delete newState[action.title];

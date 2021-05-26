@@ -29,7 +29,7 @@ const Details = styled.Text`
 `;
 
 const QuizSummary = ({ item, onCardPress }) => {
-  console.log('item ', item);
+  // console.log('item ', item);
   const [title, quiz] = item;
 
   return (
