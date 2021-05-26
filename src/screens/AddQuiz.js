@@ -54,17 +54,18 @@ const styles = StyleSheet.create({
 //----------------------------------------------------------------
 
 const AddQuiz = ({ dispatch, navigation }) => {
-  const [title, setTitle] = useState('test');
+  const [title, setTitle] = useState('');
 
+  //TODO: Validate the text input
   const handleAddQuizPress = () => {
     dispatch(handleAddQuiz(title));
+    setTitle('');
     navigation.navigate('Quizes');
   };
 
   return (
     <View style={{ flex: 1, alignItems: 'center', marginTop: 20 }}>
-      <Title>New Quiz</Title>
-      <Title>{title}</Title>
+      <Title>Add New Quiz</Title>
       <Container>
         <Input
           placeholder='Quiz Title'

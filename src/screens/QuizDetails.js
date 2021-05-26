@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/native';
 import { primary } from '../utils/colors';
 import { connect } from 'react-redux';
@@ -63,7 +63,7 @@ const TextButtonText = styled.Text`
 //-----------------------------------------------------------
 
 const QuizDetails = ({ navigation, quiz, dispatch }) => {
-  // console.log('Details Quiz Called Again ', quiz);
+  console.log('Details Quiz Called Again ', quiz);
   const { title, questions } = quiz;
 
   const handleAddQuestionPress = () => {
@@ -72,12 +72,18 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
 
   const handleRemoveQuizPress = () => {
     dispatch(handleRemoveQuiz(title));
-    navigation.navigate('QuizesHome');
+  navigation.navigate('QuizesHome');
   };
+
+  useEffect(() => {
+    navigation.setOptions({
+      title,
+    });
+  }, []);
 
   return (
     <Container>
-      <Title>{title}</Title>
+      {/* <Title>{title}</Title> */}
       <Details>{`${questions.length} Questions`}</Details>
       <Button onPress={() => console.log('Pressed')}>
         <ButtonText>Start Quiz</ButtonText>

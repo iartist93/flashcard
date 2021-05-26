@@ -5,7 +5,7 @@ import React from 'react';
 import Quizes from './src/screens/Quizes';
 import AddQuiz from './src/screens/AddQuiz';
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { primary } from './src/utils/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -17,6 +17,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import QuizDetails from './src/screens/QuizDetails';
 import AddQuestion from './src/screens/AddQuestion';
+
+//-------------------------------------------------------------
 
 export default function App() {
   const Tab = createBottomTabNavigator();
@@ -46,7 +48,7 @@ export default function App() {
           name='QuizDetails'
           component={DetailsScreen}
           //TOOD:: Make dynamic header name for each quize
-          options={{ title: 'Details To be Changed' }}
+          // options={{ title: 'Details To be Changed' }}
         />
         <Stack.Screen
           name='AddQuestion'
@@ -62,6 +64,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Provider store={store}>
+        <StatusBar
+          animated={true}
+          // backgroundColor={blue}
+          // barStyle='dark-content'
+        />
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {

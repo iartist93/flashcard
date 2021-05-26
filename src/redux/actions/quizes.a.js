@@ -46,6 +46,7 @@ export const handleRecieveQuizes = () => {
   };
 };
 
+// TODO : Show <AppLoading> after saving quiz or question
 export const handleAddQuiz = (title) => {
   return async (dispatch) => {
     const quiz = await API.addQuiz(title);
