@@ -1,5 +1,5 @@
+import { nanoid } from 'nanoid/non-secure';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { nanoid } from 'nanoid';
 
 const QUIZES_STORAGE_KEY = 'QUIZES_STORAGE_KEY';
 

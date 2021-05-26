@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableHighlight } from 'react-native';
 
 import styled from '@emotion/native';
 
-const Card = styled.View`
+const Card = styled.TouchableOpacity`
   height: 100px;
   background-color: white;
   border-radius: 10px;
@@ -26,15 +26,16 @@ const Details = styled.Text`
 `;
 
 const QuizSummary = ({ item, onCardPress }) => {
-  const { title, questions } = item;
+  console.log('item ', item);
+  const [title, quiz] = item;
 
   return (
-    <TouchableHighlight onPress={onCardPress}>
-      <Card>
+    <Card onPress={onCardPress} activeOpacity={0.5}>
+      <View>
         <Title>{title}</Title>
-        <Details>{questions.length}</Details>
-      </Card>
-    </TouchableHighlight>
+        <Details>{quiz.questions.length}</Details>
+      </View>
+    </Card>
   );
 };
 

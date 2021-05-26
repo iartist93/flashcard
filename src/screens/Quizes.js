@@ -1,30 +1,33 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import QuizSummary from '../components/QuizSummary';
 
 import styled from '@emotion/native';
+import { connect } from 'react-redux';
 
-const Quizes = ({ navigation }) => {
+const Quizes = ({ navigation, quizes }) => {
   const handleCardPress = (title) => {
     navigation.navigate('QuizDetails', { title });
   };
 
   return (
     <View style={{ marginTop: 20 }}>
-      <QuizSummary
-        item={{ title: 'Quiz1', questions: ['Q(1)', 'Q(2)'] }}
-        onCardPress={() => handleCardPress('Quiz1')}
-      />
-      <QuizSummary
-        item={{ title: 'Quiz2', questions: ['Q(1)', 'Q(2)', 'Q(2)', 'Q(2)'] }}
-        onCardPress={() => handleCardPress('Quiz2')}
-      />
-      <QuizSummary
-        item={{ title: 'Quiz3', questions: ['Q(1)', 'Q(2)', 'Q(2)', 'Q(2)'] }}
-        onCardPress={() => handleCardPress('Quiz3')}
+      <FlatList
+        data={Object.entries(quizes)}
+        renderItem={(props) => {
+          const [key] = props.item;
+          return (
+            <QuizSummary {...props} onCardPress={() => handleCardPress(key)} />
+          );
+        }}
+        keyExtractor={([key]) => key}
       />
     </View>
   );
 };
 
-export default Quizes;
+const mapState = (state) => ({
+  quizes: state.quizes,
+});
+
+export default connect(mapState)(Quizes);

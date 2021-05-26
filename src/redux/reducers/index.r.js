@@ -1,4 +1,4 @@
-import quizes from './quizes.rs';
+import quizes from './quizes.r.js';
 import { combineReducers } from 'redux';
 
-export default combineReducers(quizes);
+export default combineReducers({ quizes });

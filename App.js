@@ -16,14 +16,17 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import QuizDetails from './src/screens/QuizDetails';
+import AddQuestion from './src/screens/AddQuestion';
 
 export default function App() {
   const Tab = createBottomTabNavigator();
   const Stack = createStackNavigator();
 
   const QuizesScreen = () => {
-    const Home = (props) => <Quizes {...props} />;
-    const Details = (props) => <QuizDetails {...props} />;
+    const HomeScreen = (props) => <Quizes {...props} />;
+    const DetailsScreen = (props) => <QuizDetails {...props} />;
+    const AddQuestionScreen = (props) => <AddQuestion {...props} />;
+
     return (
       <Stack.Navigator
         screenOptions={({ route }) => ({
@@ -36,14 +39,19 @@ export default function App() {
       >
         <Stack.Screen
           name='QuizesHome'
-          component={Home}
+          component={HomeScreen}
           options={{ title: 'Quizes' }}
         />
         <Stack.Screen
           name='QuizDetails'
-          component={Details}
+          component={DetailsScreen}
           //TOOD:: Make dynamic header name for each quize
           options={{ title: 'Details To be Changed' }}
+        />
+        <Stack.Screen
+          name='AddQuestion'
+          component={AddQuestionScreen}
+          options={{ title: 'Add Question' }}
         />
       </Stack.Navigator>
     );
