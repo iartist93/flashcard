@@ -10,6 +10,8 @@ import { primary } from './src/utils/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Provider } from 'react-redux';
+import store from './src/redux/store';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -51,34 +53,36 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            iconName =
-              route.name === 'Quizes'
-                ? focused
-                  ? 'layers'
-                  : 'layers-outline'
-                : route.name === 'AddQuiz'
-                ? focused
-                  ? 'add-circle'
-                  : 'add-circle-outline'
-                : '';
-            return <Ionicons name={iconName} size={30} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          showLabel: false,
-          activeTintColor: primary,
-          labelStyle: {
-            fontSize: 18,
-          },
-        }}
-      >
-        <Tab.Screen name='Quizes' component={QuizesScreen} />
-        <Tab.Screen name='AddQuiz' component={AddQuizScreen} />
-      </Tab.Navigator>
+      <Provider store={store}>
+        <Tab.Navigator
+          screenOptions={({ route }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName;
+              iconName =
+                route.name === 'Quizes'
+                  ? focused
+                    ? 'layers'
+                    : 'layers-outline'
+                  : route.name === 'AddQuiz'
+                  ? focused
+                    ? 'add-circle'
+                    : 'add-circle-outline'
+                  : '';
+              return <Ionicons name={iconName} size={30} color={color} />;
+            },
+          })}
+          tabBarOptions={{
+            showLabel: false,
+            activeTintColor: primary,
+            labelStyle: {
+              fontSize: 18,
+            },
+          }}
+        >
+          <Tab.Screen name='Quizes' component={QuizesScreen} />
+          <Tab.Screen name='AddQuiz' component={AddQuizScreen} />
+        </Tab.Navigator>
+      </Provider>
     </NavigationContainer>
   );
 }

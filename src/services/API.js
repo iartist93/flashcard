@@ -1,16 +1,25 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { nanoid } from 'nanoid';
 
 const QUIZES_STORAGE_KEY = 'QUIZES_STORAGE_KEY';
 
 /**
  * Add new quize to the database.
- * @param {*} quiz Object with the quiz title as key and the new empty quiz object as value.
+ * @param {*} title Title/key of the new quiz.
+ * @returns `quiz` object with the title as key and empty quiz as value
  */
-const addQuiz = async (quiz) => {
+const addQuiz = async (title) => {
   try {
+    const quiz = {
+      [title]: {
+        title,
+        questions: [],
+      },
+    };
     const allQuizes = await getQuizes();
     const newQuizes = JSON.stringify({ ...allQuizes, ...quiz });
     await AsyncStorage.setItem(QUIZES_STORAGE_KEY, newQuizes);
+    return quiz;
   } catch (e) {
     console.error("Can't add new quiz, ", e);
   }
@@ -35,12 +44,15 @@ const removeQuiz = async (title) => {
  * Add a new question to the current questions list for a quiz.
  * @param {*} title Quiz tile/key
  * @param {*} question New question object {question, answer}.
+ * @returns new `question` after adding `id` field
  */
 const addQuestion = async (title, question) => {
   try {
+    question.id = nanoid();
     const allQuizes = await getQuizes();
     allQuizes[title].questions.push(question);
     await AsyncStorage.setItem(QUIZES_STORAGE_KEY, allQuizes);
+    return question;
   } catch (e) {
     console.error("Can't add new question, ", e);
   }
