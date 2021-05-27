@@ -4,9 +4,9 @@ import { primary, primaryDark } from '../utils/colors';
 import { connect } from 'react-redux';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { View } from 'react-native';
+import { View, Animated, TouchableOpacity } from 'react-native';
 
-const Container = styled.View`
+const Container = styled(Animated.View)`
   /* height: 400px; */
   /* width: 90%; */
   background-color: white;
@@ -47,7 +47,7 @@ const TakeQuiz = ({ navigation, quiz, dispatch }) => {
   const { title, questions } = quiz;
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  // const [correct, setCorrect] = useState(0);
+  const [isFlipped, setFlipped] = useState(false);
   const correct = useRef(0);
 
   const increment = () => {
@@ -72,35 +72,65 @@ const TakeQuiz = ({ navigation, quiz, dispatch }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title,
+      title: title + ' quiz',
     });
   }, []);
+
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+
+  const rotateRight = () => {
+    Animated.timing(rotateAnim, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    setFlipped(!isFlipped);
+  };
+
+  const rotateLeft = () => {
+    Animated.timing(rotateAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    setFlipped(!isFlipped);
+  };
+
+  // Next, interpolate beginning and end values (in this case 0 and 1)
+  const flip = rotateAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
 
   return (
     <View>
       <Centered>
         <Details>{`Q ${currentQuestion + 1}/${questions.length}`}</Details>
       </Centered>
-      <Container>
-        <Title>{questions[currentQuestion].question}</Title>
-        <Row>
-          {/* TODO:: Heighlight change the button name */}
-          <FontAwesome
-            name='thumbs-o-up'
-            size={50}
-            onPress={handleThumbUp}
-            color={primary}
-            style={{
-              marginRight: 40,
-            }}
-          />
-          <FontAwesome
-            name='thumbs-o-down'
-            size={50}
-            onPress={handleThumbDown}
-            color={primaryDark}
-          />
-        </Row>
+      <Container style={{ transform: [{ rotateY: flip }] }}>
+        <TouchableOpacity onPress={isFlipped ? rotateLeft : rotateRight}>
+          <View>
+            <Title>{questions[currentQuestion].question}</Title>
+            <Row>
+              {/* TODO:: Heighlight change the button name */}
+              <FontAwesome
+                name='thumbs-o-up'
+                size={50}
+                onPress={handleThumbUp}
+                color={primary}
+                style={{
+                  marginRight: 40,
+                }}
+              />
+              <FontAwesome
+                name='thumbs-o-down'
+                size={50}
+                onPress={handleThumbDown}
+                color={primaryDark}
+              />
+            </Row>
+          </View>
+        </TouchableOpacity>
       </Container>
     </View>
   );
