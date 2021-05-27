@@ -53,7 +53,7 @@ const QuizResult = ({ navigation, route }) => {
       <Title>{`Your score ${correct} of ${total}`}</Title>
       <Row>
         <Button onPress={handleStartOver}>
-          <ButtonText>Start Over</ButtonText>
+          <ButtonText>Take Again</ButtonText>
         </Button>
         <Button onPress={handleBackPressed}>
           <ButtonText>Back</ButtonText>

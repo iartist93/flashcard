@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 
 import styled from '@emotion/native';
 import { primary } from '../utils/colors';
@@ -53,34 +53,50 @@ const styles = StyleSheet.create({
 
 //----------------------------------------------------------------
 
-const AddQuiz = ({ dispatch, navigation }) => {
+const AddQuiz = ({ dispatch, navigation, loading }) => {
   const [title, setTitle] = useState('');
+  const [redirect, setRedirect] = useState(false);
 
   //TODO: Validate the text input
   const handleAddQuizPress = () => {
     dispatch(handleAddQuiz(title));
-    setTitle('');
-    navigation.navigate('Quizes');
+    setRedirect(true);
   };
 
+  useEffect(() => {
+    if (!loading && redirect) {
+      console.log('add quiz ', loading, redirect);
+      navigation.navigate('QuizDetails', { title });
+      setTitle('');
+    }
+  }, [loading, redirect]);
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', marginTop: 20 }}>
-      <Title>Add New Quiz</Title>
-      <Container>
-        <Input
-          placeholder='Quiz Title'
-          style={styles.shadow}
-          value={title}
-          onChangeText={setTitle}
-        />
-        <Button>
-          <ButtonText onPress={handleAddQuizPress}>Add</ButtonText>
-        </Button>
-      </Container>
+    <View>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <View style={{ flex: 1, alignItems: 'center', marginTop: 20 }}>
+          <Title>Add New Quiz</Title>
+          <Container>
+            <Input
+              placeholder='Quiz Title'
+              style={styles.shadow}
+              value={title}
+              onChangeText={setTitle}
+            />
+            <Button>
+              <ButtonText onPress={handleAddQuizPress}>Add</ButtonText>
+            </Button>
+          </Container>
+        </View>
+      )}
     </View>
   );
 };
 
-const mapState = (state) => ({});
+const mapState = (state) => ({
+  loading: state.loading,
+});
 
-export default connect()(AddQuiz);
+export default connect(mapState)(AddQuiz);

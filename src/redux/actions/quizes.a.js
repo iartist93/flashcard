@@ -1,4 +1,5 @@
 import * as API from '../../services/API';
+import { toggleLoading } from './loading.a';
 
 //--------------------------------------------
 
@@ -49,8 +50,10 @@ export const handleRecieveQuizes = () => {
 // TODO : Show <AppLoading> after saving quiz or question
 export const handleAddQuiz = (title) => {
   return async (dispatch) => {
+    dispatch(toggleLoading());
     const quiz = await API.addQuiz(title);
     dispatch(addQuiz(quiz));
+    dispatch(toggleLoading());
   };
 };
 
@@ -63,8 +66,10 @@ export const handleRemoveQuiz = (title) => {
 
 export const handleAddQuestion = (title, question) => {
   return async (dispatch) => {
+    dispatch(toggleLoading());
     const questionWithId = await API.addQuestion(title, question);
     dispatch(addQuestion(title, questionWithId));
+    dispatch(toggleLoading());
   };
 };
 
