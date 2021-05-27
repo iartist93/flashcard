@@ -18,13 +18,13 @@ const Centered = styled.View`
 const Button = styled.TouchableOpacity`
   background-color: ${primary};
   font-size: 20px;
-  width: 130px;
+  width: 140px;
   padding: 10px;
   border-radius: 10px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+  margin: 20px 5px;
 `;
 
 const ButtonText = styled.Text`
@@ -32,21 +32,33 @@ const ButtonText = styled.Text`
   color: white;
 `;
 
+const Row = styled.View`
+  flex-direction: row;
+`;
+
 //-----------------------------------------------------------
 
 const QuizResult = ({ navigation, route }) => {
-  const { correct, total } = route.params;
+  const { title, correct, total } = route.params;
 
   const handleBackPressed = () => {
     navigation.navigate('QuizesHome');
+  };
+  const handleStartOver = () => {
+    navigation.navigate('TakeQuiz', { title });
   };
 
   return (
     <Centered>
       <Title>{`Your score ${correct} of ${total}`}</Title>
-      <Button onPress={handleBackPressed}>
-        <ButtonText>Back</ButtonText>
-      </Button>
+      <Row>
+        <Button onPress={handleStartOver}>
+          <ButtonText>Start Over</ButtonText>
+        </Button>
+        <Button onPress={handleBackPressed}>
+          <ButtonText>Back</ButtonText>
+        </Button>
+      </Row>
     </Centered>
   );
 };

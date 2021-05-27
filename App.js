@@ -57,7 +57,7 @@ export default function App() {
         <Stack.Screen
           name='AddQuestion'
           component={AddQuestionScreen}
-          options={{ title: 'Add Question' }}
+          options={{ title: 'Add Card' }}
         />
         <Stack.Screen
           name='TakeQuiz'

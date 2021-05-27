@@ -95,12 +95,12 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
   return (
     <Container>
       {/* <Title>{title}</Title> */}
-      <Details>{`${questions.length} Questions`}</Details>
+      <Details>{`${questions.length} Cards`}</Details>
       <Button onPress={handleStartQuizPress} disabled={questions.length === 0}>
         <ButtonText disabled={questions.length === 0}>Start Quiz</ButtonText>
       </Button>
       <Button onPress={handleAddQuestionPress}>
-        <ButtonText>Add Question</ButtonText>
+        <ButtonText>Add Card</ButtonText>
       </Button>
       <TextButton onPress={handleRemoveQuizPress}>
         <TextButtonText>Delete</TextButtonText>
