@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import styled from '@emotion/native';
-import { primary } from '../utils/colors';
+import styled, { css } from '@emotion/native';
+import { primary, primaryDark } from '../utils/colors';
 import { connect } from 'react-redux';
 import { handleRemoveQuiz } from '../redux/actions/quizes.a';
 
@@ -12,12 +12,6 @@ const Container = styled.View`
   padding: 20px;
   justify-content: center;
   align-items: center;
-`;
-
-const Title = styled.Text`
-  font-size: 25px;
-  font-weight: 700;
-  color: black;
 `;
 
 const Details = styled.Text`
@@ -37,11 +31,23 @@ const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   margin: 10px 0;
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      background-color: ${primaryDark};
+    `}
 `;
 
 const ButtonText = styled.Text`
   font-size: 25px;
   color: white;
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      color: #bbb7b7;
+    `}
 `;
 
 const TextButton = styled.TouchableOpacity`
@@ -72,7 +78,12 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
 
   const handleRemoveQuizPress = () => {
     dispatch(handleRemoveQuiz(title));
-  navigation.navigate('QuizesHome');
+    navigation.navigate('QuizesHome');
+  };
+
+  const handleStartQuizPress = () => {
+    if (questions.length === 0) return;
+    navigation.navigate('TakeQuiz', { title });
   };
 
   useEffect(() => {
@@ -85,8 +96,8 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
     <Container>
       {/* <Title>{title}</Title> */}
       <Details>{`${questions.length} Questions`}</Details>
-      <Button onPress={() => console.log('Pressed')}>
-        <ButtonText>Start Quiz</ButtonText>
+      <Button onPress={handleStartQuizPress} disabled={questions.length === 0}>
+        <ButtonText disabled={questions.length === 0}>Start Quiz</ButtonText>
       </Button>
       <Button onPress={handleAddQuestionPress}>
         <ButtonText>Add Question</ButtonText>

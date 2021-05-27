@@ -17,6 +17,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import QuizDetails from './src/screens/QuizDetails';
 import AddQuestion from './src/screens/AddQuestion';
+import TakeQuiz from './src/screens/TakeQuiz';
+import QuizResult from './src/screens/QuizResult';
 
 //-------------------------------------------------------------
 
@@ -28,6 +30,8 @@ export default function App() {
     const HomeScreen = (props) => <Quizes {...props} />;
     const DetailsScreen = (props) => <QuizDetails {...props} />;
     const AddQuestionScreen = (props) => <AddQuestion {...props} />;
+    const TakeQuizScreen = (props) => <TakeQuiz {...props} />;
+    const QuizResultScreen = (props) => <QuizResult {...props} />;
 
     return (
       <Stack.Navigator
@@ -54,6 +58,16 @@ export default function App() {
           name='AddQuestion'
           component={AddQuestionScreen}
           options={{ title: 'Add Question' }}
+        />
+        <Stack.Screen
+          name='TakeQuiz'
+          component={TakeQuizScreen}
+          options={{ title: 'Take Quiz' }}
+        />
+        <Stack.Screen
+          name='QuizResult'
+          component={QuizResultScreen}
+          options={{ title: 'Quiz Result' }}
         />
       </Stack.Navigator>
     );
