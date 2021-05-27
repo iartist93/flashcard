@@ -69,7 +69,7 @@ const TextButtonText = styled.Text`
 //-----------------------------------------------------------
 
 const QuizDetails = ({ navigation, quiz, dispatch }) => {
-  console.log('Details Quiz Called Again ', quiz);
+  // console.log('Details Quiz Called Again ', quiz);
   const { title, questions } = quiz;
 
   const handleAddQuestionPress = () => {

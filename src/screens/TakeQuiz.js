@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/native';
 import { primary, primaryDark } from '../utils/colors';
 import { connect } from 'react-redux';
@@ -47,21 +47,22 @@ const TakeQuiz = ({ navigation, quiz, dispatch }) => {
   const { title, questions } = quiz;
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [correct, setCorrect] = useState(0);
+  // const [correct, setCorrect] = useState(0);
+  const correct = useRef(0);
 
   const increment = () => {
     setCurrentQuestion(currentQuestion + 1);
     if (currentQuestion >= questions.length - 1) {
       navigation.navigate('QuizResult', {
         title,
-        correct,
+        correct: correct.current,
         total: questions.length,
       });
     }
   };
 
   const handleThumbUp = () => {
-    setCorrect(correct + 1);
+    correct.current++;
     increment();
   };
 
