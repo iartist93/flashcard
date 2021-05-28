@@ -7,9 +7,10 @@
 
 ---
 
-## Live Preview
+## NOTE for Review
 
-TBA
+- **Don't** try to run on the `web`, as the notification package I'm using will produce some errors and the app won't run.
+- The app is currenlty testes on `Android` only using `Windows10`. I have no access to `iOS` or `MacOS` sorry for the inconvenience!
 
 ---
 
@@ -26,15 +27,6 @@ TBA
 
 ```shell
 > cd flashcard
-> yarn web # to run on browser
-> yarn android # to run on simulator or actual device
-> yarn ios # to run on ios emulator or actual device
+> yarn
+> yarn android
 ```
-
----
-
-## Note :
-
-- Tested on Android platform only.
-
----
