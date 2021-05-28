@@ -32,3 +32,9 @@ TBA
 ```
 
 ---
+
+## Note :
+
+- Tested on Android platform only.
+
+---

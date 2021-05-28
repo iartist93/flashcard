@@ -6,6 +6,13 @@ import { primary } from '../utils/colors';
 import { connect } from 'react-redux';
 import { handleAddQuiz } from '../redux/actions/quizes.a';
 
+import {
+  testCancelAllNotification,
+  testNotification,
+  testSchedualledNotification,
+  testRemoveAllDeliveredNotifications,
+} from '../../notifications';
+
 const Container = styled.View`
   align-items: center;
   justify-content: center;
@@ -64,6 +71,11 @@ const AddQuiz = ({ dispatch, navigation, loading }) => {
   };
 
   useEffect(() => {
+    testNotification();
+    testSchedualledNotification();
+  }, []);
+
+  useEffect(() => {
     if (!loading && redirect) {
       console.log('add quiz ', loading, redirect);
       navigation.navigate('QuizDetails', { title });
@@ -72,7 +84,7 @@ const AddQuiz = ({ dispatch, navigation, loading }) => {
   }, [loading, redirect]);
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       {loading ? (
         <ActivityIndicator />
       ) : (

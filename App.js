@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Quizes from './src/screens/Quizes';
 import AddQuiz from './src/screens/AddQuiz';
