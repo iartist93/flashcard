@@ -45,12 +45,6 @@ const Title = styled.Text`
   color: black;
 `;
 
-const styles = StyleSheet.create({
-  shadow: {
-    elevation: 4,
-  },
-});
-
 //----------------------------------------------------------------
 
 const AddQuiz = ({ dispatch, navigation, loading }) => {
@@ -96,6 +90,12 @@ const AddQuiz = ({ dispatch, navigation, loading }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    elevation: 4,
+  },
+});
 
 const mapState = (state) => ({
   loading: state.loading,

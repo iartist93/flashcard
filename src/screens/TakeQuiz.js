@@ -4,9 +4,15 @@ import { primary, primaryDark } from '../utils/colors';
 import { connect } from 'react-redux';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { View, Animated, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  Animated,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 
-const Container = styled.View``;
+const Card = styled.View``;
 
 const Title = styled.Text`
   font-size: 35px;
@@ -23,13 +29,23 @@ const Details = styled.Text`
 
 const Row = styled.View`
   flex-direction: row;
-  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const TipText = styled.Text`
+  color: #8d8888;
+  font-size: 15px;
 `;
 
 const Centered = styled.View`
   justify-content: center;
   align-items: center;
-  width: 100%;
 `;
 
 const FlipperWrapper = styled(Animated.View)`
@@ -37,31 +53,38 @@ const FlipperWrapper = styled(Animated.View)`
   border-radius: 10px;
   margin: auto 30px;
   padding: 20px;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
-  width: 100%;
+  height: 300px;
 `;
+
 const FrontSide = styled(Animated.View)`
   transform: rotateY(0deg);
-  /* position: relative; */
   backface-visibility: hidden;
   z-index: 2;
+  justify-content: center;
+  align-items: center;
+  /* position: absolute; */
 `;
 
 const BackSide = styled(Animated.View)`
   transform: rotateY(180deg);
-  /* position: relative; */
   backface-visibility: hidden;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
 `;
 
 //-----------------------------------------------------------
 
 const TakeQuiz = ({ navigation, quiz, dispatch }) => {
   const { title, questions } = quiz;
-
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isFlipped, setFlipped] = useState(false);
   const correct = useRef(0);
+  const rotateAnimFront = useRef(new Animated.Value(0)).current;
+  const rotateAnimBack = useRef(new Animated.Value(1)).current;
 
   const increment = () => {
     setCurrentQuestion(currentQuestion + 1);
@@ -89,19 +112,13 @@ const TakeQuiz = ({ navigation, quiz, dispatch }) => {
     });
   }, []);
 
-  const rotateAnim = useRef(new Animated.Value(0)).current;
-
   const rotateRight = () => {
-    Animated.timing(rotateAnim, {
+    Animated.timing(rotateAnimFront, {
       toValue: 1,
       duration: 200,
       useNativeDriver: true,
     }).start();
-    setFlipped(!isFlipped);
-  };
-
-  const rotateLeft = () => {
-    Animated.timing(rotateAnim, {
+    Animated.timing(rotateAnimBack, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
@@ -109,8 +126,28 @@ const TakeQuiz = ({ navigation, quiz, dispatch }) => {
     setFlipped(!isFlipped);
   };
 
+  const rotateLeft = () => {
+    Animated.timing(rotateAnimFront, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(rotateAnimBack, {
+      toValue: 1,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    setFlipped(!isFlipped);
+  };
+
   // Next, interpolate beginning and end values (in this case 0 and 1)
-  const flip = rotateAnim.interpolate({
+  const flipFront = rotateAnimFront.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+
+  // Next, interpolate beginning and end values (in this case 0 and 1)
+  const flipBack = rotateAnimBack.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '180deg'],
   });
@@ -118,41 +155,56 @@ const TakeQuiz = ({ navigation, quiz, dispatch }) => {
   return (
     <View>
       <Centered>
-        <Details>{`Q ${currentQuestion + 1}/${questions.length}`}</Details>
+        <Details>{`Card ${currentQuestion + 1}/${questions.length}`}</Details>
       </Centered>
-      <Container>
-        <TouchableOpacity onPress={isFlipped ? rotateLeft : rotateRight}>
-          <FlipperWrapper style={{ transform: [{ rotateY: flip }] }}>
-            <FrontSide style={{ transform: [{ rotateY: flip }] }}>
-              <Title>{questions[currentQuestion].question}</Title>
-              <Row>
-                {/* TODO:: Heighlight change the button name */}
-                <FontAwesome
-                  name='thumbs-o-up'
-                  size={50}
-                  onPress={handleThumbUp}
-                  color={primary}
-                  style={{
-                    marginRight: 40,
-                  }}
-                />
-                <FontAwesome
-                  name='thumbs-o-down'
-                  size={50}
-                  onPress={handleThumbDown}
-                  color={primaryDark}
-                />
-              </Row>
-            </FrontSide>
-            <BackSide style={{ transform: [{ rotateY: flip }] }}>
-              <Title>{questions[currentQuestion].answer}</Title>
-            </BackSide>
-          </FlipperWrapper>
-        </TouchableOpacity>
-      </Container>
+      <TouchableOpacity onPress={isFlipped ? rotateLeft : rotateRight}>
+        {/* TODO: Add shadow to the card  */}
+        <FlipperWrapper>
+          <FrontSide style={{ transform: [{ rotateY: flipFront }] }}>
+            <Title style={{ flex: 1 }}>
+              {questions[currentQuestion].question}
+            </Title>
+            <TipText>Touch to see the answer!</TipText>
+          </FrontSide>
+          <BackSide style={{ transform: [{ rotateY: flipBack }] }}>
+            <Title style={{ flex: 1 }}>
+              {questions[currentQuestion].answer}
+            </Title>
+            <TipText>You got it right?</TipText>
+          </BackSide>
+        </FlipperWrapper>
+      </TouchableOpacity>
+
+      <Row style={{ marginTop: 50 }}>
+        {/* TODO:: Heighlight change the button name */}
+        <Centered style={{ marginRight: 60 }}>
+          <FontAwesome
+            name='thumbs-o-up'
+            size={50}
+            onPress={handleThumbUp}
+            color={primary}
+          />
+          <ButtonText>Correct</ButtonText>
+        </Centered>
+        <Centered>
+          <FontAwesome
+            name='thumbs-o-down'
+            size={50}
+            onPress={handleThumbDown}
+            color={primaryDark}
+          />
+          <ButtonText>Wrong</ButtonText>
+        </Centered>
+      </Row>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    elevation: 4,
+  },
+});
 
 const mapState = (state, { route }) => ({
   quiz: state.quizes[route.params.title],

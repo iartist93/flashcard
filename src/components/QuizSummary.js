@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableHighlight } from 'react-native';
+
+import { StyleSheet } from 'react-native';
 
 import styled from '@emotion/native';
 
@@ -33,7 +34,7 @@ const QuizSummary = ({ item, onCardPress }) => {
   const [title, quiz] = item;
 
   return (
-    <CardButton onPress={onCardPress} activeOpacity={0.5}>
+    <CardButton onPress={onCardPress} activeOpacity={0.5} style={styles.shadow}>
       <Row>
         <Title>{title}</Title>
         <Details>{quiz.questions.length}</Details>
@@ -41,5 +42,11 @@ const QuizSummary = ({ item, onCardPress }) => {
     </CardButton>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    elevation: 4,
+  },
+});
 
 export default QuizSummary;

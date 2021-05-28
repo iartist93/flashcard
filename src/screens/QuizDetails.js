@@ -3,6 +3,7 @@ import styled, { css } from '@emotion/native';
 import { primary, primaryDark } from '../utils/colors';
 import { connect } from 'react-redux';
 import { handleRemoveQuiz } from '../redux/actions/quizes.a';
+import { StyleSheet } from 'react-native';
 
 const Container = styled.View`
   height: 400px;
@@ -93,7 +94,7 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
   }, []);
 
   return (
-    <Container>
+    <Container style={styles.shadow}>
       {/* <Title>{title}</Title> */}
       <Details>{`${questions.length} Cards`}</Details>
       <Button onPress={handleStartQuizPress} disabled={questions.length === 0}>
@@ -108,6 +109,12 @@ const QuizDetails = ({ navigation, quiz, dispatch }) => {
     </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  shadow: {
+    elevation: 4,
+  },
+});
 
 const mapState = (state, { route }) => ({
   quiz: state.quizes[route.params.title],
