@@ -20,6 +20,8 @@ import AddQuestion from './src/screens/AddQuestion';
 import TakeQuiz from './src/screens/TakeQuiz';
 import QuizResult from './src/screens/QuizResult';
 
+import { setNotificationForTomorrow } from './notifications';
+
 //-------------------------------------------------------------
 
 export default function App() {
@@ -74,6 +76,10 @@ export default function App() {
   };
 
   const AddQuizScreen = (props) => <AddQuiz {...props} />;
+
+  useEffect(() => {
+    setNotificationForTomorrow();
+  }, []);
 
   return (
     <NavigationContainer>

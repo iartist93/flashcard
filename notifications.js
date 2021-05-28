@@ -1,6 +1,9 @@
 import PushNotification, { Importance } from 'react-native-push-notification';
 
-// Must be outside of any component LifeCycle (such as `componentDidMount`).
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const NOTIFICATION_STORAGE_KEY = 'NOTIFICATION_STORAGE_KEY';
+
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
   onRegister: function (token) {
@@ -29,15 +32,6 @@ PushNotification.configure({
   },
 
   popInitialNotification: true,
-
-  /**
-   * (optional) default: true
-   * - Specified if permissions (ios) and token (android and ios) will requested or not,
-   * - if not, you must call PushNotificationsHandler.requestPermissions() later
-   * - if you are not using remote notification or do not have Firebase installed, use this:
-   *     requestPermissions: Platform.OS === 'ios'
-   */
-  // requestPermissions: true,
   requestPermissions: Platform.OS === 'ios',
 });
 
@@ -54,27 +48,77 @@ PushNotification.createChannel(
   (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
 );
 
-export const testNotification = () => {
-  PushNotification.localNotification({
-    channelId: 'study-remainder-channel',
-    title: 'My Notification Title',
-    message: 'My Notification Message',
-  });
+//------------------------------------------------------------------
+
+// export const testNotification = () => {
+//   PushNotification.localNotification({
+//     channelId: 'study-remainder-channel',
+//     title: 'Time to study',
+//     message: 'Do not forget to study today!',
+//   });
+// };
+
+// export const testRemoveAllDeliveredNotifications = () => {
+//   PushNotification.removeAllDeliveredNotifications();
+// };
+
+export const setNotificationForTomorrow = async () => {
+  // register new notification if there's one already.
+  const registeredNotification = await getRegisteredNotification();
+  if (registeredNotification === null) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(20);
+    tomorrow.setMinutes(0);
+
+    PushNotification.localNotificationSchedule({
+      channelId: 'study-remainder-channel',
+      title: 'Time to study',
+      message: 'Do not forget to study today!',
+      date: new Date(tomorrow),
+      allowWhileIdle: false,
+      repeatType: 'day',
+    });
+    await storeRegisteredNotification();
+  }
 };
 
-export const testSchedualledNotification = () => {
-  PushNotification.localNotificationSchedule({
-    channelId: 'study-remainder-channel',
-    message: 'My Schedualled Notification Message',
-    date: new Date(Date.now() + 15 * 1000),
-    allowWhileIdle: false,
-  });
-};
-
-export const testCancelAllNotification = () => {
+export const cancelAllNotification = async () => {
   PushNotification.cancelAllLocalNotifications();
+  await removeRegisteredNotification();
 };
 
-export const testRemoveAllDeliveredNotifications = () => {
-  PushNotification.removeAllDeliveredNotifications();
+export const reschedualeForTomrrow = async () => {
+  await cancelAllNotification();
+  await setNotificationForTomorrow();
 };
+
+//----------------------------------------------------------------
+// Local Storage API
+
+const getRegisteredNotification = async () => {
+  try {
+    const result = await AsyncStorage.getItem(NOTIFICATION_STORAGE_KEY);
+    return result !== null ? JSON.parse(result) : null;
+  } catch (e) {
+    console.error("Can't get registered notification, ", e);
+  }
+};
+
+const storeRegisteredNotification = async (title) => {
+  try {
+    await AsyncStorage.setItem(NOTIFICATION_STORAGE_KEY, JSON.stringify(true));
+  } catch (e) {
+    console.error("Can't store registered notification, ", e);
+  }
+};
+
+const removeRegisteredNotification = async (title) => {
+  try {
+    await AsyncStorage.removeItem(NOTIFICATION_STORAGE_KEY);
+  } catch (e) {
+    console.error("Can't remove registered notification, ", e);
+  }
+};
+
+//----------------------------------------------------------------

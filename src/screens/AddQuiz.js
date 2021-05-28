@@ -6,13 +6,6 @@ import { primary } from '../utils/colors';
 import { connect } from 'react-redux';
 import { handleAddQuiz } from '../redux/actions/quizes.a';
 
-import {
-  testCancelAllNotification,
-  testNotification,
-  testSchedualledNotification,
-  testRemoveAllDeliveredNotifications,
-} from '../../notifications';
-
 const Container = styled.View`
   align-items: center;
   justify-content: center;
@@ -69,11 +62,6 @@ const AddQuiz = ({ dispatch, navigation, loading }) => {
     dispatch(handleAddQuiz(title));
     setRedirect(true);
   };
-
-  useEffect(() => {
-    testNotification();
-    testSchedualledNotification();
-  }, []);
 
   useEffect(() => {
     if (!loading && redirect) {

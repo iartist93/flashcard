@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/native';
 import { connect } from 'react-redux';
 import { primary, primaryDark } from '../utils/colors';
+import { reschedualeForTomrrow } from '../../notifications';
+
+//-----------------------------------------------------------
 
 const Title = styled.Text`
   font-size: 35px;
@@ -47,6 +50,11 @@ const QuizResult = ({ navigation, route }) => {
   const handleStartOver = () => {
     navigation.navigate('TakeQuiz', { title });
   };
+
+  // the user already stydy today, so cancel any notification today and rescheduale it for tomorrow.
+  useEffect(() => {
+    reschedualeForTomrrow();
+  }, []);
 
   return (
     <Centered>
