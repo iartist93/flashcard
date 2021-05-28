@@ -21,13 +21,13 @@ const Centered = styled.View`
 const Button = styled.TouchableOpacity`
   background-color: ${primary};
   font-size: 20px;
-  width: 140px;
+  width: 120px;
   padding: 10px;
   border-radius: 10px;
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin: 20px 5px;
+  margin: 20px 8px;
 `;
 
 const ButtonText = styled.Text`
@@ -61,7 +61,7 @@ const QuizResult = ({ navigation, route }) => {
       <Title>{`Your score ${correct} of ${total}`}</Title>
       <Row>
         <Button onPress={handleStartOver}>
-          <ButtonText>Take Again</ButtonText>
+          <ButtonText>Again?</ButtonText>
         </Button>
         <Button onPress={handleBackPressed}>
           <ButtonText>Back</ButtonText>

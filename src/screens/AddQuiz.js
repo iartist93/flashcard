@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
 //----------------------------------------------------------------
 
 const AddQuiz = ({ dispatch, navigation, loading }) => {
+  console.log('Add Quiz Rendered Again ------------------>>>');
   const [title, setTitle] = useState('');
   const [redirect, setRedirect] = useState(false);
 
@@ -68,6 +69,7 @@ const AddQuiz = ({ dispatch, navigation, loading }) => {
       console.log('add quiz ', loading, redirect);
       navigation.navigate('QuizDetails', { title });
       setTitle('');
+      setRedirect(false);
     }
   }, [loading, redirect]);
 
